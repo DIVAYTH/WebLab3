@@ -1,0 +1,28 @@
+.footer {
+    width: 100%;
+    position: fixed;
+    background: rgb(00, 33, 55);
+    font-family: serif;
+    font-size: 18px;
+    font-style: oblique;
+    color: white;
+    bottom: 0;
+    padding: 10px;
+}
+
+#gitName {
+    position: relative;
+    float: right;
+    right: 50%;
+}
+
+a img {
+    padding: 5px 0 0 0;
+    position: relative;
+    float: right;
+    right: 51%;
+}
+
+body {
+    margin: 0;
+}

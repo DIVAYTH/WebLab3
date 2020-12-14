@@ -1,0 +1,48 @@
+.header {
+    background: rgb(00, 33, 55);
+    font-family: serif;
+    font-size: 28px;
+    font-style: oblique;
+    color: white;
+    padding: 15px;
+}
+
+.trapper {
+    float: right;
+}
+
+@font-face {
+    font-family: 'digital-clock-font';
+    src: url('../fonts/digital-7.ttf');
+}
+
+.clock {
+    margin: 50px 0 25px 0;
+    font-size: 150px;
+    font-family: 'digital-clock-font';
+    color: rgb(00, 33, 55);
+    text-align: center;
+}
+
+.day {
+    margin: 0 0 25px 0;
+    font-size: 50px;
+    font-family: 'digital-clock-font';
+    color: rgb(00, 33, 55);
+    text-align: center;
+}
+
+.welcomeToMainPage {
+    margin: 25px 0 0 0;
+    text-align: center;
+}
+
+.buttonToMainPage {
+    width: 300px;
+    height: 60px;
+    background: rgb(00, 33, 55);
+    text-align: center;
+    line-height: 20px;
+    color: white;
+    font: oblique 17px;
+}

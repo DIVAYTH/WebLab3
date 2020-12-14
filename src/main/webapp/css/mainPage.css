@@ -1,0 +1,91 @@
+.header {
+    background: rgb(00, 33, 55);
+}
+
+.graph {
+   margin: 40px;
+}
+
+.form {
+    margin: 45px;
+}
+
+.inputText {
+    width: 100px;
+    outline: 0;
+    border-width: 0 0 2px;
+    border-color: rgb(00, 33, 55);
+}
+
+.mainDiv {
+    display: flex;
+}
+
+.input {
+    display: flex;
+}
+
+.inputR {
+    margin: 30px 0 0 0;
+    display: flex;
+}
+
+.checkBoxR {
+    margin: 0 0 0 15px;
+}
+
+.checkBoxR div {
+    display: flex;
+}
+
+.checkBoxX {
+    margin: 0 0 0 15px;
+}
+
+.checkBoxX div {
+    display: flex;
+}
+
+.sar {
+    margin: 30px 0 0 0;
+    display: flex;
+}
+
+.inputX {
+    display: flex;
+}
+
+.sab {
+    margin-left: 10px;
+}
+
+.S {
+    color: grey;
+    font-size: 14px;
+}
+
+.scroll {
+    margin: 40px;
+    overflow: scroll;
+    width: 700px;
+    height: 600px;
+}
+
+
+.ui-datatable thead th{
+    background: rgb(00, 33, 55);
+    height: 30px;
+    color: white;
+}
+
+.buttonToStartPage {
+    margin: 10px 0 10px 90%;
+    background: whitesmoke;
+    width: 120px;
+    height: 30px;
+    color: black;
+}
+
+.error{
+    margin: 10px 0 0 0;
+}

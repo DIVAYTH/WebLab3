@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:р="http://java.sun.com/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://java.sun.com/jstl/core">
+<f:view>
+    <h:head>
+        <title>Main Page WebLab3</title>
+        <link rel="stylesheet" type="text/css" href="../css/mainPage.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/style.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"/>
+    </h:head>
+    <h:body>
+        <div class="header">
+            <h:button class="buttonToStartPage" outcome="startPage" value="Назад"/>
+        </div>
+        <div>
+            <div class="mainDiv">
+                <div jsf:id="gr" class="graph">
+                    <script type="text/javascript">
+                        let point;
+
+                        function setPoint(p, e) {
+                            point = p.getBoundingClientRect();
+                            if (PrimeFaces.widgets["r1"].input.is(':checked')) {
+                                sendClick(e, 1)
+                            } else if (PrimeFaces.widgets["r2"].input.is(':checked')) {
+                                sendClick(e, 1.5)
+                            } else if (PrimeFaces.widgets["r3"].input.is(':checked')) {
+                                sendClick(e, 2)
+                            } else if (PrimeFaces.widgets["r4"].input.is(':checked')) {
+                                sendClick(e, 2.5)
+                            } else if (PrimeFaces.widgets["r5"].input.is(':checked')) {
+                                sendClick(e, 3)
+                            } else {
+                                $('.error').css({'color': 'red'}).html("Вы не ввели радиус")
+                            }
+                        }
+
+                        function sendClick(e, r) {
+                            let xVal = e.clientX - point.left;
+                            let yVal = e.clientY - point.top;
+                            x = (((xVal - 200) * r) / 140).toFixed(1);
+                            y = (((200 - yVal) * r) / 140).toFixed(1);
+                            sendPoints([{name: 'x', value: x}, {name: 'r', value: r}, {name: 'y', value: y}]);
+                        }
+                    </script>
+                    <svg class="xyr" width="400" height="400" xmlns="http://www.w3.org/2000/svg"
+                         onclick="setPoint(this, event)">
+                        <line x1="0" x2="400" y1="200" y2="200" stroke="black"/>
+                        <text x="385" y="185">X</text>
+                        <polygon points="400,200 385,206 385,194" stroke="black"/>
+                        <line x1="270" x2="270" y1="207" y2="193" stroke="black"/>
+                        <text x="260" y="185">R/2</text>
+                        <line x1="340" x2="340" y1="207" y2="193" stroke="black"/>
+                        <text x="335" y="185">R</text>
+                        <line x1="130" x2="130" y1="207" y2="193" stroke="black"/>
+                        <text x="120" y="185">R/2</text>
+                        <line x1="60" x2="60" y1="207" y2="193" stroke="black"/>
+                        <text x="55" y="185">R</text>
+                        <line x1="200" x2="200" y1="0" y2="400" stroke="black"/>
+                        <text x="215" y="15">Y</text>
+                        <polygon points="200,0 194,15 206,15" stroke="black"/>
+                        <line x1="207" x2="193" y1="270" y2="270" stroke="black"/>
+                        <text x="215" y="275">R/2</text>
+                        <line x1="207" x2="193" y1="340" y2="340" stroke="black"/>
+                        <text x="215" y="345">R</text>
+                        <line x1="207" x2="193" y1="130" y2="130" stroke="black"/>
+                        <text x="215" y="135">R/2</text>
+                        <line x1="207" x2="193" y1="60" y2="60" stroke="black"/>
+                        <text x="215" y="65">R</text>
+                        <rect x="60" y="200" height="140" width="140" fill="rgb(00, 33, 55)" fill-opacity="0.9"/>
+                        <polygon points="200,60 60,200 200,200" fill="rgb(00, 33, 55)" fill-opacity="0.9"/>
+                        <path d="M200 200 L 340 200 C 340 270 270 340 200 340" fill="rgb(00, 33, 55)"
+                              fill-opacity="0.9"/>
+                        <c:forEach items="${database.listOfResults}" var="res">
+                            <c:if test="${res.result.equals('true')}">
+                                <circle r="3" cx="${res.x * 140 / pointsBean.r + 200}"
+                                        cy="${res.y * -140 / pointsBean.r + 200}" fill="red">
+                                </circle>
+                            </c:if>
+                            <c:if test="${res.result.equals('false')}">
+                                <circle r="3" cx="${res.x * 140 / pointsBean.r + 200}"
+                                        cy="${res.y * - 140 / pointsBean.r + 200}" fill="black">
+                                </circle>
+                            </c:if>
+                        </c:forEach>
+                    </svg>
+                </div>
+            </div>
+            <div class="form">
+                <h:form>
+                    <div class="input">
+                        <div>
+                            <div>
+                                <р:inputText styleClass="inputText" value="#{pointsBean.fieldY}" id="y"
+                                             a:placeholder="Y">
+                                    <f:validator validatorId="inputTextValidator"/>
+                                </р:inputText>
+                            </div>
+                            <div>
+                                <div class="inputR">
+                                    <div class="S">
+                                        <label>R</label>
+                                    </div>
+                                    <div jsf:id="R" class="checkBoxR">
+                                        <p:selectBooleanCheckbox widgetVar="r1" value="#{pointsBean.fieldR[0]}"
+                                                                 itemLabel="1" onchange="cleanR()">
+                                            <p:ajax update="R, gr" resetValues="true"/>
+                                        </p:selectBooleanCheckbox>
+                                        <p:selectBooleanCheckbox widgetVar="r2" value="#{pointsBean.fieldR[1]}"
+                                                                 itemLabel="1.5" onchange="cleanR()">
+                                            <p:ajax update="R, gr" resetValues="true"/>
+                                        </p:selectBooleanCheckbox>
+                                        <p:selectBooleanCheckbox widgetVar="r3" value="#{pointsBean.fieldR[2]}"
+                                                                 itemLabel="2" onchange="cleanR()">
+                                            <p:ajax update="R, gr" resetValues="true"/>
+                                        </p:selectBooleanCheckbox>
+                                        <p:selectBooleanCheckbox widgetVar="r4" value="#{pointsBean.fieldR[3]}"
+                                                                 itemLabel="2.5" onchange="cleanR()">
+                                            <p:ajax update="R, gr" resetValues="true"/>
+                                        </p:selectBooleanCheckbox>
+                                        <p:selectBooleanCheckbox widgetVar="r5" value="#{pointsBean.fieldR[4]}"
+                                                                 itemLabel="3" onchange="cleanR()">
+                                            <p:ajax update="R, gr" resetValues="true"/>
+                                        </p:selectBooleanCheckbox>
+                                        <p:remoteCommand name="cleanR" action="#{pointsBean.deleteAllCheckboxR}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sar">
+                                <h:commandButton type="submit" value="Очистить" action="#{database.clearDB}">
+                                    <p:ajax update="table, gr, error"/>
+                                </h:commandButton>
+                                <h:commandButton class="sab" action="#{pointsBean.checkPoints()}"
+                                                 value="Отправить">
+                                    <f:param name="skipValidator" value="neSkipay"/>
+                                    <p:ajax event="click" process="@form" update="table, gr, error"/>
+                                </h:commandButton>
+                                <p:remoteCommand name="sendPoints" update="table, gr, error"
+                                                 actionListener="#{pointsBean.checkPoints()}"/>
+                            </div>
+                            <div jsf:id="error" class="error">
+                                <h:message for="y" style="color: red"/>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="inputX">
+                                <div class="S">
+                                    <label>X</label>
+                                </div>
+                                <div jsf:id="X" class="checkBoxX">
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[0]}" itemLabel="-5"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[1]}" itemLabel="-4"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[2]}" itemLabel="-3"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[3]}" itemLabel="-2"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox widgetVar="x5" value="#{pointsBean.fieldX[4]}"
+                                                             itemLabel="-1"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[5]}" itemLabel="0"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[6]}" itemLabel="1"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[7]}" itemLabel="2"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:selectBooleanCheckbox value="#{pointsBean.fieldX[8]}" itemLabel="3"
+                                                             onchange="cleanX()">
+                                        <p:ajax update="X" resetValues="true"/>
+                                    </p:selectBooleanCheckbox>
+                                    <p:remoteCommand name="cleanX" action="#{pointsBean.deleteAllCheckboxX}"
+                                                     onchange="cleanX()"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+            <div class="scroll">
+                <p:dataTable id="table" emptyMessage="Тут пока пусто(((" scrollHeight="true" var="res"
+                             value="#{database.listOfResults}">
+                    <p:column headerText="Y" width="15%">
+                        <h:outputText value="#{res.y}"/>
+                    </p:column>
+                    <p:column headerText="X" width="15%">
+                        <h:outputText value="#{res.x}"/>
+                    </p:column>
+                    <p:column headerText="R" width="15%">
+                        <h:outputText value="#{res.r}"/>
+                    </p:column>
+                    <p:column headerText="RESULT" width="15%">
+                        <h:outputText value="#{res.result}"/>
+                    </p:column>
+                    <p:column headerText="TIME" width="20%">
+                        <h:outputText value="#{res.time}"/>
+                    </p:column>
+                    <p:column headerText="BENCHMARK" width="20%">
+                        <h:outputText value="#{res.benchmark} мс"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+        <div class="footer">
+            <span id="gitName">DIVAYTH</span><br/>
+            <a href="https://github.com/DIVAYTH"><img id="gitImg" src="../img/github.png" height="40px"/></a>
+        </div>
+    </h:body>
+</f:view>
+</html>
